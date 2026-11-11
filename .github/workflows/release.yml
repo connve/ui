@@ -1,0 +1,118 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions: {}
+
+# One release at a time, in push order.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+
+  # Publishes the version in package.json when npm doesn't have it yet, and creates its
+  # GitHub release when it has no tag yet. Each is checked on its own, so a run that
+  # failed halfway is finished by the next push to main.
+  detect:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      tag: ${{ steps.detect.outputs.tag }}
+      publish: ${{ steps.detect.outputs.publish }}
+      release: ${{ steps.detect.outputs.release }}
+      dist-tag: ${{ steps.detect.outputs.dist-tag }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Detect unreleased version
+        id: detect
+        run: |
+          NAME="$(jq -r .name package.json)"
+          VERSION="$(jq -r .version package.json)"
+          TAG="v${VERSION}"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+
+          # Prints nothing for a version npm doesn't have, and fails for a package it doesn't have.
+          PUBLISHED="$(npm view "${NAME}@${VERSION}" version 2>/dev/null || true)"
+          if [ "$PUBLISHED" = "$VERSION" ]; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+          if git rev-parse --quiet --verify "refs/tags/${TAG}" >/dev/null; then
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+
+          # Prereleases (1.2.0-next.1) go to the `next` dist-tag, so `latest` stays stable.
+          case "$VERSION" in
+            *-*) echo "dist-tag=next" >> "$GITHUB_OUTPUT" ;;
+            *) echo "dist-tag=latest" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+  publish:
+    needs: [ci, detect]
+    if: needs.detect.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm trusted publishing, with provenance
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      # No cache in the job that can publish, so nothing restored from another run reaches it.
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      # Dependencies' install scripts don't run where a publish is possible.
+      - run: npm ci --ignore-scripts
+
+      # `prepublishOnly` builds dist/ and checks it. npm authenticates this workflow through
+      # the trusted publisher set up on npmjs.com. The NPM_TOKEN secret is only for the first
+      # publish, before the package exists to set that up; delete it afterwards.
+      - name: Publish to npm
+        env:
+          DIST_TAG: ${{ needs.detect.outputs.dist-tag }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --provenance --tag "$DIST_TAG"
+
+  github-release:
+    needs: [ci, detect, publish]
+    # Also when the version was already on npm, e.g. published by hand.
+    if: >-
+      !cancelled() && needs.ci.result == 'success' && needs.detect.outputs.release == 'true' &&
+      (needs.publish.result == 'success' || needs.publish.result == 'skipped')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # gh release create
+    steps:
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ needs.detect.outputs.tag }}
+          DIST_TAG: ${{ needs.detect.outputs.dist-tag }}
+        run: |
+          PRERELEASE=()
+          if [ "$DIST_TAG" = next ]; then PRERELEASE=(--prerelease); fi
+          gh release create "$TAG" --target "$GITHUB_SHA" --generate-notes "${PRERELEASE[@]}"

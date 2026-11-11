@@ -1,0 +1,169 @@
+/* Import after `tailwindcss` and the `daisyui` plugin. */
+
+/* The components' own classes, for the app's Tailwind build. */
+@source './';
+
+/* Both themes set every daisyUI token: with `themes: false` nothing fills a gap.
+   Text colors keep at least 4.5:1 against what they sit on (WCAG AA). */
+
+@plugin 'daisyui/theme' {
+	name: 'connve-light';
+	default: true;
+	prefersdark: false;
+	color-scheme: light;
+
+	--color-base-100: #fffef9;
+	--color-base-200: #eef0ea;
+	--color-base-300: #d9dcd4;
+	--color-base-content: oklch(21% 0.006 285.885);
+	--color-primary: #006b55;
+	--color-primary-content: #ffffff;
+	--color-secondary: #007600;
+	--color-secondary-content: oklch(94% 0.028 342.258);
+	--color-accent: #00e168;
+	--color-accent-content: oklch(38% 0.063 188.416);
+	--color-neutral: #0e271b;
+	--color-neutral-content: oklch(92% 0.004 286.32);
+	--color-info: #007cf3;
+	--color-info-content: oklch(29% 0.066 243.157);
+	--color-success: #00ffd1;
+	--color-success-content: oklch(37% 0.077 168.94);
+	--color-warning: #ff9804;
+	--color-warning-content: oklch(41% 0.112 45.904);
+	--color-error: #cf3450;
+	--color-error-content: oklch(27% 0.105 12.094);
+
+	--radius-selector: 0.5rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+	--depth: 1;
+	--noise: 0;
+
+	/* The library's own tokens: text on the theme's pale tints, which mixes the
+	   hue with the text color for contrast, and the glow behind state messages. */
+	--color-attention: color-mix(in oklab, var(--color-warning) 60%, var(--color-base-content));
+	--color-chip-success: color-mix(in oklab, var(--color-primary) 75%, var(--color-base-content));
+	--color-chip-warning: color-mix(in oklab, var(--color-warning) 60%, var(--color-base-content));
+	--color-chip-error: color-mix(in oklab, var(--color-error) 65%, var(--color-base-content));
+	--state-glow-opacity: 0.22;
+	--state-glow-blend: multiply;
+	--state-title: linear-gradient(120deg, #006b55 0%, #007a6e 50%, #007a3d 100%);
+}
+
+@plugin 'daisyui/theme' {
+	name: 'connve-dark';
+	prefersdark: true;
+	color-scheme: dark;
+
+	--color-base-100: #0e1a15;
+	--color-base-200: #142520;
+	--color-base-300: #1c2f28;
+	--color-base-content: #e8f0ec;
+	--color-primary: #00a372;
+	--color-primary-content: #0e1a15;
+	--color-secondary: #00b4a6;
+	--color-secondary-content: oklch(94% 0.028 342.258);
+	--color-accent: #00ffd1;
+	--color-accent-content: oklch(38% 0.063 188.416);
+	--color-neutral: #d4d4d4;
+	--color-neutral-content: #0e1a15;
+	--color-info: #3399ff;
+	--color-info-content: oklch(29% 0.066 243.157);
+	--color-success: #00cc99;
+	--color-success-content: oklch(37% 0.077 168.94);
+	--color-warning: #d97706;
+	--color-warning-content: oklch(41% 0.112 45.904);
+	--color-error: #ef5a72;
+	--color-error-content: #0e1a15;
+
+	--radius-selector: 0.5rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+	--depth: 1;
+	--noise: 0;
+
+	/* On the dark base the hues read as they are. */
+	--color-attention: var(--color-warning);
+	--color-chip-success: var(--color-primary);
+	--color-chip-warning: var(--color-warning);
+	--color-chip-error: var(--color-error);
+	--state-glow-opacity: 0.28;
+	--state-glow-blend: screen;
+	--state-title: linear-gradient(120deg, #00b4a6 0%, #3fd1c4 50%, #00e168 100%);
+}
+
+/* Filter chips. Each theme sets the text color on the tints. */
+@utility chip {
+	@apply flex h-8 items-center gap-1.5 rounded-full border border-transparent px-3 text-xs transition-colors;
+}
+@utility chip-sm {
+	@apply flex h-6 items-center gap-1.5 rounded-full border border-transparent px-2 text-xs transition-colors;
+}
+@utility chip-inactive {
+	@apply opacity-70 hover:opacity-100;
+}
+@utility chip-neutral {
+	@apply bg-base-200;
+}
+@utility chip-success {
+	@apply bg-primary/10;
+	color: var(--color-chip-success);
+}
+@utility chip-warn {
+	@apply bg-warning/10;
+	color: var(--color-chip-warning);
+}
+@utility chip-error {
+	@apply bg-error/10;
+	color: var(--color-chip-error);
+}
+
+/* Warning hue readable as text. */
+@utility text-attention {
+	color: var(--color-attention);
+}
+
+/* Hides native number-input spinners so number fields match other inputs. */
+@utility no-spinner {
+	appearance: textfield;
+	-moz-appearance: textfield;
+	&::-webkit-outer-spin-button,
+	&::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+}
+
+/* List rows read at the size of the side pane beside them. Outside any layer to beat
+   daisyUI's own `table-sm` size, which sits in the utilities layer; a row's own text
+   size then needs `!`. */
+.table-sm tbody tr {
+	font-size: var(--text-sm);
+}
+
+/* Clickable rows, in a layer so an app's own utilities still win. */
+@layer components {
+	tr[role='button']:focus {
+		outline: none;
+	}
+	/* A visible ring, since the hover background alone also marks the selected row. */
+	tr[role='button']:focus-visible {
+		@apply bg-base-200;
+		outline: 2px solid var(--color-primary);
+		outline-offset: -2px;
+	}
+}
+
+/* daisyUI draws a tooltip's text as generated content, which screen readers read too, after
+   the name the element already has. An empty alternative keeps it visual only. */
+@supports (content: 'x' / '') {
+	.tooltip[data-tip]::before {
+		content: attr(data-tip) / '';
+	}
+}
