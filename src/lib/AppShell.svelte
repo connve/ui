@@ -31,12 +31,14 @@
 		brand?: Snippet;
 		/** The bottom of the rail, such as a version and a settings link. */
 		railFooter?: Snippet<[{ compact: boolean }]>;
+		/** The bottom of the menu on a phone, such as the theme; as in `SiteMenu`'s `footer`. */
+		menuFooter?: Snippet;
 		/** The right side of the top bar. */
 		actions?: Snippet;
 		children: Snippet;
 	}
 
-	let { nav, brand, railFooter, actions, children }: Props = $props();
+	let { nav, brand, railFooter, menuFooter, actions, children }: Props = $props();
 
 	const shell = setShell(new ShellState());
 
@@ -131,7 +133,7 @@
 				{#if brand}
 					<div
 						class={[
-							'flex h-10 items-center transition-opacity',
+							'flex h-10 items-center transition-opacity max-md:hidden',
 							compact && 'md:group-hover:opacity-0 md:group-has-[button:focus-visible]:opacity-0'
 						]}
 					>
@@ -160,6 +162,15 @@
 						/>
 					</button>
 				</div>
+				<!-- On a phone the menu starts with its close button, as `SiteMenu` does. -->
+				<button
+					type="button"
+					class="{BUTTON} ml-auto md:hidden"
+					aria-label={labels.close}
+					onclick={closeMenu}
+				>
+					<Icon icon={icons.x} class="h-5 w-5" />
+				</button>
 			</div>
 
 			<nav
@@ -209,6 +220,11 @@
 			{#if railFooter}
 				<div class={['flex h-12 shrink-0 items-center', compact ? 'justify-center' : 'px-6']}>
 					{@render railFooter({ compact })}
+				</div>
+			{/if}
+			{#if menuFooter}
+				<div class="flex shrink-0 items-center border-t border-base-200 px-4 py-3 md:hidden">
+					{@render menuFooter()}
 				</div>
 			{/if}
 		</div>

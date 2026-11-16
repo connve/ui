@@ -14,7 +14,7 @@
 	let { variant = 'neutral', class: className, children, ...rest }: Props = $props();
 
 	const VARIANT = {
-		neutral: 'border-current opacity-60',
+		neutral: 'border-base-content/40 text-base-content/60',
 		success: 'border-transparent bg-primary/10 text-(--color-chip-success)',
 		error: 'border-transparent bg-error/10 text-(--color-chip-error)',
 		warning: 'border-transparent bg-warning/10 text-attention'

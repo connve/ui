@@ -51,6 +51,9 @@
 	--state-glow-opacity: 0.22;
 	--state-glow-blend: multiply;
 	--state-title: linear-gradient(120deg, #006b55 0%, #007a6e 50%, #007a3d 100%);
+	--brand-from: #006b55;
+	--brand-via: #00b4a6;
+	--brand-to: #00e168;
 }
 
 @plugin 'daisyui/theme' {
@@ -96,6 +99,19 @@
 	--state-glow-opacity: 0.28;
 	--state-glow-blend: screen;
 	--state-title: linear-gradient(120deg, #00b4a6 0%, #3fd1c4 50%, #00e168 100%);
+	--brand-from: #00b4a6;
+	--brand-via: #3fd1c4;
+	--brand-to: #00e168;
+}
+
+/* The brand gradient, for headline words and live status. */
+:root {
+	--gradient-brand: linear-gradient(
+		120deg,
+		var(--brand-from) 0%,
+		var(--brand-via) 50%,
+		var(--brand-to) 100%
+	);
 }
 
 /* Filter chips. Each theme sets the text color on the tints. */
@@ -122,6 +138,29 @@
 @utility chip-error {
 	@apply bg-error/10;
 	color: var(--color-chip-error);
+}
+
+/* Text in the brand gradient, shimmering unless the reader asks for less motion. */
+@utility text-brand {
+	background: var(--gradient-brand);
+	background-size: 200% 200%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: transparent;
+	animation: brand-shimmer 6s ease-in-out infinite;
+	@media (prefers-reduced-motion: reduce) {
+		animation: none;
+	}
+}
+@keyframes brand-shimmer {
+	0%,
+	100% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
 }
 
 /* Warning hue readable as text. */

@@ -3,3 +3,5 @@
 	themes: false;
 }
 @import './lib/theme.css';
+@import './lib/code.css';
+@import './lib/prose.css';

@@ -8,7 +8,7 @@
 		ListHeader,
 		StateMessage,
 		StatusDot
-	} from '../lib/index.js';
+	} from '../../lib/index.js';
 
 	interface Row {
 		name: string;

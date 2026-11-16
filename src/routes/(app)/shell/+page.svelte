@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { SvelteSet } from 'svelte/reactivity';
-	import { FolderTree, SidePane, buildTree } from '../../lib/index.js';
+	import { FolderTree, SidePane, buildTree } from '../../../lib/index.js';
 
 	const paths = ['shop/orders', 'shop/refunds', 'reports/daily/export', 'reports/weekly', 'intake'];
 	const tree = buildTree(paths, (path) => path);
