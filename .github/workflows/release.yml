@@ -87,14 +87,18 @@ jobs:
       # Dependencies' install scripts don't run where a publish is possible.
       - run: npm ci --ignore-scripts
 
-      # `prepublishOnly` builds dist/ and checks it. npm authenticates this workflow through
-      # the trusted publisher set up on npmjs.com. The NPM_TOKEN secret is only for the first
-      # publish, before the package exists to set that up; delete it afterwards.
-      - name: Publish to npm
+      # Staged publishing (`npm stage`) arrived in npm 12.
+      - run: npm install --global npm@12
+
+      # Built here, so the staged package is the checked one whatever `stage` runs itself.
+      - run: npm run package
+
+      # npm authenticates this workflow through the trusted publisher set up on npmjs.com, and
+      # stages the version: it goes live once a maintainer approves it there, with 2FA.
+      - name: Stage on npm
         env:
           DIST_TAG: ${{ needs.detect.outputs.dist-tag }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --provenance --tag "$DIST_TAG"
+        run: npm stage publish . --provenance --tag "$DIST_TAG"
 
   github-release:
     needs: [ci, detect, publish]

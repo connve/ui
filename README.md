@@ -106,13 +106,9 @@ npm run icons    # regenerates src/lib/icons.ts after adding a name in scripts/i
 
 ## Release
 
-Bump `version` in `package.json` and merge to `main`. After CI passes, the release workflow publishes the version to npm with provenance when npm doesn't have it yet, and creates its GitHub release when it has no tag yet. A version with a suffix, such as `1.2.0-next.1`, goes to the `next` dist-tag.
+Bump `version` in `package.json` and merge to `main`. After CI passes, the release workflow stages the version on npm, with provenance, when npm doesn't have it yet, and creates its GitHub release when it has no tag yet. A version with a suffix, such as `1.2.0-next.1`, goes to the `next` dist-tag.
 
-Publishing happens only in CI. npm sets up trusted publishing on an existing package, so the first version goes out with a token:
-
-1. On npmjs.com, create a granular access token with read and write access to the `@connve` scope, and save it as the `NPM_TOKEN` secret of the GitHub repository.
-2. Push to `main`; the workflow publishes the first version with that token.
-3. On the package's settings page, add a trusted publisher: GitHub Actions, `connve/ui`, workflow `release.yml`, allowed to `npm publish`. Then delete the `NPM_TOKEN` secret and revoke the token, and set the package to require 2FA and disallow tokens.
+Publishing happens only in CI, through npm's trusted publishing: the workflow stages the version (`npm stage publish`), and a maintainer approves it on npmjs.com, or with `npm stage approve <id>`, before it goes live. Until then npm doesn't have the version, so a later push to `main` stages it again.
 
 ## License
 
