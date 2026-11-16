@@ -78,10 +78,11 @@ jobs:
           persist-credentials: false
 
       # No cache in the job that can publish, so nothing restored from another run reaches it.
+      # No `registry-url` either: its .npmrc holds a token placeholder, which npm sends when the
+      # trusted-publisher exchange fails, hiding why it failed.
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
-          registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
       # Dependencies' install scripts don't run where a publish is possible.
@@ -98,7 +99,8 @@ jobs:
       - name: Stage on npm
         env:
           DIST_TAG: ${{ needs.detect.outputs.dist-tag }}
-        run: npm stage publish . --provenance --tag "$DIST_TAG"
+        # Verbose, so the log shows how npm's trusted-publisher exchange went.
+        run: npm stage publish . --provenance --tag "$DIST_TAG" --loglevel verbose
 
   github-release:
     needs: [ci, detect, publish]
