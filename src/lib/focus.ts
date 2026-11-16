@@ -13,10 +13,11 @@ const FOCUSABLE = [
 	'[tabindex]:not([tabindex="-1"])'
 ].join(',');
 
-/** The elements Tab reaches inside `container`, in order; hidden and inert ones are skipped. */
+/** The elements Tab reaches inside `container`, in order; hidden, inert and `tabindex="-1"` ones are skipped. */
 function tabbable(container: HTMLElement): HTMLElement[] {
 	return [...container.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
-		(el) => !el.closest('[inert]') && el.checkVisibility({ visibilityProperty: true })
+		(el) =>
+			el.tabIndex >= 0 && !el.closest('[inert]') && el.checkVisibility({ visibilityProperty: true })
 	);
 }
 

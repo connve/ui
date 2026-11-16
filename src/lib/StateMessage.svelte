@@ -11,7 +11,7 @@
 		tone?: 'notice' | 'oops';
 		/** `labels.stateNotice` or `labels.stateOops` when unset. */
 		title?: string;
-		message: string;
+		message?: string;
 		icon?: string | IconifyIcon;
 		/** Actions under the message, e.g. a retry button. */
 		children?: Snippet;
@@ -52,7 +52,9 @@
 
 	<div class="relative">
 		<h2 class="state-title text-lg font-semibold">{resolvedTitle}</h2>
-		<p class="mt-1 max-w-md text-sm opacity-70">{message}</p>
+		{#if message}
+			<p class="mt-1 max-w-md text-sm opacity-70">{message}</p>
+		{/if}
 	</div>
 
 	{#if children}
@@ -62,9 +64,11 @@
 
 <style>
 	/* Brand glow — matches the agents hero. The theme sets its strength. */
+	/* Faded out towards its edges, so a scrolling panel never cuts it off in a line. */
 	.state-glow {
 		filter: blur(80px);
 		opacity: var(--state-glow-opacity, 0.22);
+		mask-image: radial-gradient(closest-side, #000 55%, transparent);
 	}
 	/* The blobs sit around the centre of the message, so the glow is behind it
 	   whatever the width of the page or the panes beside it. */

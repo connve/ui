@@ -5,7 +5,7 @@ export const labels = $state({
 	copy: 'Copy',
 	copied: 'Copied',
 	loading: 'Loading',
-	resize: 'Resize the side panel with the arrow keys; Home or double-click resets it',
+	resize: 'Resize panel',
 	new: 'New',
 	edit: 'Edit',
 	editReadOnly: 'Read-only, managed in the repository',
@@ -23,7 +23,21 @@ export const labels = $state({
 	themeDark: 'Dark',
 	themeOption: (theme: string) => `${theme} theme`,
 	stateNotice: 'Nothing here yet',
-	stateOops: 'Oops, something went wrong'
+	stateOops: 'Something went wrong',
+	search: 'Search',
+	searchPlaceholder: 'Search…',
+	searchEmpty: 'Nothing found',
+	searchUnavailable: 'Search is unavailable',
+	newsletterTitle: 'Get the edge.',
+	newsletterSubtitle: 'News, releases, and insights — no noise.',
+	newsletterEmail: 'Email address',
+	newsletterPlaceholder: 'you@company.com',
+	newsletterSubscribe: 'Subscribe',
+	newsletterConsent:
+		'I consent to receive marketing communication from CONNVE, including emails, ads, and personalised content. You can withdraw consent anytime.',
+	newsletterDone: "You're in. Watch your inbox.",
+	newsletterInvalidEmail: 'Please enter a valid email address.',
+	newsletterConsentRequired: 'Please agree to receive marketing communication.'
 });
 
 export type Labels = typeof labels;
