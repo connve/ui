@@ -1,5 +1,6 @@
 export { default as AppShell, type NavItem } from './AppShell.svelte';
 export { default as Badge } from './Badge.svelte';
+export { default as CodingAgentsLink } from './CodingAgentsLink.svelte';
 export { default as CopyButton } from './CopyButton.svelte';
 export { default as EditButton } from './EditButton.svelte';
 export { default as FolderTree } from './FolderTree.svelte';
@@ -24,6 +25,7 @@ export { default as StatusDot } from './StatusDot.svelte';
 export { default as ThemeToggle } from './ThemeToggle.svelte';
 export { default as Wordmark } from './Wordmark.svelte';
 export { codeCopy } from './codeCopy.js';
+export { codingAgents, type CodingAgent } from './codingAgents.js';
 export * as icons from './icons.js';
 export { labels, type Labels } from './labels.svelte.js';
 export { isMobile, MOBILE_QUERY, PANE_OVER_PAGE } from './mobile.js';
