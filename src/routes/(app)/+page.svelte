@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {
 		Badge,
+		CodingAgentsLink,
 		CopyButton,
 		IconButton,
 		Inspector,
@@ -25,6 +26,7 @@
 	];
 
 	let folder = $state<string | null>(null);
+	let agentsLink = $state(true);
 	let selected = $state<Row | null>(null);
 </script>
 
@@ -78,7 +80,16 @@
 			</table>
 		</div>
 		<div class="min-h-80 px-6">
-			<StateMessage tone="notice" message="An empty list shows this." />
+			<StateMessage tone="notice" message="An empty list shows this.">
+				{#if agentsLink}
+					<CodingAgentsLink
+						href="#"
+						label="Onboard your agents to Flowgen"
+						ondismiss={() => (agentsLink = false)}
+						dismissLabel="Don't show this again"
+					/>
+				{/if}
+			</StateMessage>
 		</div>
 	</div>
 
