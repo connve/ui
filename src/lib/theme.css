@@ -206,3 +206,21 @@
 		content: attr(data-tip) / '';
 	}
 }
+
+/* A touch screen has no hover: a tooltip only shows after a tap, stays, and can run off the
+   screen. The element's own name still reaches screen readers. */
+@media (hover: none) {
+	.tooltip::before,
+	.tooltip::after {
+		display: none;
+	}
+}
+
+/* iOS zooms into a field whose text is under 16px. */
+@media (hover: none) and (pointer: coarse) {
+	input,
+	select,
+	textarea {
+		font-size: 16px;
+	}
+}
