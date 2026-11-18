@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1
+
+### Fixed
+
+- Tooltips don't show on touch screens, where a tap left them open and off the screen edge.
+- Fields on touch screens use 16px text, so iOS doesn't zoom in on focus.
+
 ## 0.3.0
 
 ### Added
