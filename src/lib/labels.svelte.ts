@@ -28,6 +28,10 @@ export const labels = $state({
 	searchPlaceholder: 'Search…',
 	searchEmpty: 'Nothing found',
 	searchUnavailable: 'Search is unavailable',
+	updateAvailable: 'Update available',
+	updateVersions: (latest: string, version: string) =>
+		`Version ${latest} is out. This is ${version}.`,
+	releaseNotes: 'Release notes',
 	newsletterTitle: 'Get the edge.',
 	newsletterSubtitle: 'News, releases, and insights — no noise.',
 	newsletterEmail: 'Email address',

@@ -1,7 +1,15 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { AppShell, Logo, ThemeToggle, icons, type NavItem } from '../../lib/index.js';
+	import Icon from '@iconify/svelte';
+	import {
+		AppShell,
+		Logo,
+		ThemeToggle,
+		UpdateNotice,
+		icons,
+		type NavItem
+	} from '../../lib/index.js';
 
 	let { children } = $props();
 
@@ -34,6 +42,23 @@
 		<a href={resolve('/(app)')} class="text-primary" aria-label="Home"
 			><Logo class="h-6 w-auto" /></a
 		>
+	{/snippet}
+	{#snippet railFooter({ compact }: { compact: boolean })}
+		<div class={['flex w-full flex-col gap-2', compact && 'items-center']}>
+			<UpdateNotice
+				version="0.3.1"
+				latest="0.3.2"
+				command="npm install @connve/ui@latest"
+				releaseNotes="https://www.npmjs.com/package/@connve/ui"
+				{compact}
+			/>
+			<span
+				class="flex h-8 w-8 items-center justify-center text-base-content/50"
+				aria-label="Settings"
+			>
+				<Icon icon="tabler:adjustments" class="h-5 w-5" />
+			</span>
+		</div>
 	{/snippet}
 	{#snippet actions()}
 		<div class="max-sm:hidden">

@@ -218,7 +218,7 @@
 			</nav>
 
 			{#if railFooter}
-				<div class={['flex h-12 shrink-0 items-center', compact ? 'justify-center' : 'px-6']}>
+				<div class={['flex min-h-12 shrink-0 items-center py-2', compact ? 'justify-center' : 'px-6']}>
 					{@render railFooter({ compact })}
 				</div>
 			{/if}
