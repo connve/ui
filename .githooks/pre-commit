@@ -1,0 +1,14 @@
+#!/bin/sh
+# Formats the staged files with Prettier and stages the result, so CI's lint passes.
+# Turn it on once per clone with `npm run hooks`.
+
+git diff --cached --name-only -z --diff-filter=ACMR > /tmp/connve-ui-staged.$$
+if [ -s /tmp/connve-ui-staged.$$ ]; then
+	xargs -0 npx prettier --write --ignore-unknown --log-level warn < /tmp/connve-ui-staged.$$ &&
+		xargs -0 git add < /tmp/connve-ui-staged.$$
+	status=$?
+else
+	status=0
+fi
+rm -f /tmp/connve-ui-staged.$$
+exit $status

@@ -96,6 +96,7 @@ labels.close = m.common_close();
 
 ```sh
 npm install
+npm run hooks    # once per clone: formats staged files with Prettier on commit
 npm run dev      # the component showcase
 npm run check    # types
 npm run lint     # prettier and eslint; `npm run format` fixes formatting

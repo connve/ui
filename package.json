@@ -28,6 +28,7 @@
 		"test": "vitest run",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
+		"hooks": "git config core.hooksPath .githooks",
 		"icons": "node scripts/icons.js && prettier --write src/lib/icons.ts",
 		"prepublishOnly": "npm run package"
 	},
