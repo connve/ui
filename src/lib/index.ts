@@ -23,6 +23,7 @@ export { default as SiteMenu } from './SiteMenu.svelte';
 export { default as StateMessage } from './StateMessage.svelte';
 export { default as StatusDot } from './StatusDot.svelte';
 export { default as ThemeToggle } from './ThemeToggle.svelte';
+export { default as UpdateNotice } from './UpdateNotice.svelte';
 export { default as Wordmark } from './Wordmark.svelte';
 export { codeCopy } from './codeCopy.js';
 export { codingAgents, type CodingAgent } from './codingAgents.js';

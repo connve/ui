@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.2
+
+### Added
+
+- `UpdateNotice`, Update available for the rail footer: an icon with a
+  tooltip when the rail is collapsed, the icon and its label when expanded.
+  It opens the versions, the command that updates with a copy button or a
+  note in its place, and a link to the release notes. Its texts are in
+  `labels`: `updateAvailable`, `updateVersions` and `releaseNotes`.
+
+### Changed
+
+- `AppShell`'s rail footer grows with its content, so an app can stack more
+  than one row above the bottom of the rail.
+
 ## 0.3.1
 
 ### Fixed
