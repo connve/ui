@@ -62,6 +62,11 @@ export const hash: IconifyIcon = {
 	width: 24,
 	height: 24
 };
+export const infoCircle: IconifyIcon = {
+	body: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01"/><path d="M11 12h1v4h1"/></g>',
+	width: 24,
+	height: 24
+};
 export const layoutSidebarLeftCollapse: IconifyIcon = {
 	body: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm5-2v16"/><path d="m15 10l-2 2l2 2"/></g>',
 	width: 24,
@@ -104,6 +109,11 @@ export const plus: IconifyIcon = {
 };
 export const search: IconifyIcon = {
 	body: '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m18 11l-6-6"/>',
+	width: 24,
+	height: 24
+};
+export const selector: IconifyIcon = {
+	body: '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 9l4-4l4 4m0 6l-4 4l-4-4"/>',
 	width: 24,
 	height: 24
 };

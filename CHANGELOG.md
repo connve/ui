@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.4.0
+
+### Added
+
+- `SearchPalette` without `href` makes each result a button that chooses
+  it, for a picker; `label` names the dialog.
+- `Select`, a field that opens a list of options, each with an optional
+  description, in place of the browser's own select.
+- `Combobox`, a text field that narrows a list of options as you type and
+  keeps text that matches none.
+- `TokenField`, a field of tags such as labels or addresses: Enter or a
+  comma adds one, Backspace in an empty field removes the last.
+- `FormField`, a field's label with a required mark and a help text that
+  its ⓘ shows under the label, one field at a time. Its texts are in
+  `labels`: `required`, `fieldHelp` and `remove`.
+- `icons.infoCircle` and `icons.selector`.
+
+### Fixed
+
+- `AppShell` and `SearchPalette` clip their overflow, so scrolling an element
+  into view moves only the list or pane that holds it.
+
+### Breaking
+
+- `ListHeader` shows only New next to the title: `newHref` set to null leaves
+  it out, and `pending`, `pendingLabel` and `pendingHref` are removed.
+
 ## 0.3.2
 
 ### Added
