@@ -100,7 +100,7 @@
 
 <svelte:window onpopstate={() => (menuOpen = false)} />
 
-<div class="min-h-screen overflow-x-hidden bg-base-100 text-base-content">
+<div class="min-h-screen overflow-x-clip bg-base-100 text-base-content">
 	<div class="flex min-h-screen w-full min-w-0">
 		{#if menuOpen}
 			<div
@@ -268,7 +268,7 @@
 				</div>
 			</header>
 
-			<main class="min-w-0 flex-1 overflow-hidden bg-base-100">
+			<main class="min-w-0 flex-1 overflow-clip bg-base-100">
 				{@render children()}
 			</main>
 		</div>

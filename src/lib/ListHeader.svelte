@@ -11,16 +11,11 @@
 		onselect: (folder: string | null) => void;
 		/** The number of items shown, e.g. "26 flows". */
 		count: string;
-		/** Pending changes, or null when authoring is off. */
-		pending: number | null;
-		/** Names the pending changes, count included, e.g. "3 pending changes". */
-		pendingLabel: string;
-		pendingHref: string;
-		newHref: string;
+		/** Where New leads, or null for no New. */
+		newHref: string | null;
 	}
 
-	let { allLabel, folder, onselect, count, pending, pendingLabel, pendingHref, newHref }: Props =
-		$props();
+	let { allLabel, folder, onselect, count, newHref }: Props = $props();
 
 	let segments = $derived(folder ? folder.split('/') : []);
 
@@ -53,21 +48,10 @@
 		</nav>
 		<span class="shrink-0 text-xs font-normal opacity-60 @max-sm:hidden">· {count}</span>
 	</div>
-	{#if pending !== null}
-		<div class="flex shrink-0 items-center gap-2">
-			<a
-				href={pendingHref}
-				class={['btn gap-1.5 btn-ghost btn-sm', pending > 0 && 'text-attention']}
-				aria-label={pendingLabel}
-			>
-				<Icon icon={icons.gitPullRequest} class="h-4 w-4" />
-				<span class="@max-2xl:hidden">{pendingLabel}</span>
-				<span class="tabular-nums @2xl:hidden">{pending}</span>
-			</a>
-			<a href={newHref} class="btn gap-1.5 btn-primary btn-sm">
-				<Icon icon={icons.plus} class="h-4 w-4" />
-				{labels.new}
-			</a>
-		</div>
+	{#if newHref !== null}
+		<a href={newHref} class="btn shrink-0 gap-1.5 btn-primary btn-sm">
+			<Icon icon={icons.plus} class="h-4 w-4" />
+			{labels.new}
+		</a>
 	{/if}
 </div>

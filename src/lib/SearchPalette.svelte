@@ -11,12 +11,15 @@
 		query: string;
 		/** Results by group title, in order. */
 		groups: [string, T[]][];
-		href: (item: T) => string;
+		/** Where a result links; without it a click chooses the result. */
+		href?: (item: T) => string;
 		key: (item: T) => string;
-		/** Opens a result chosen with Enter; a click follows its link. */
+		/** Opens a result chosen with Enter, or with a click when results don't link. */
 		onchoose: (item: T) => void;
 		/** A result row, laid out in a flex row. */
 		row: Snippet<[T]>;
+		/** Names the dialog; `labels.search` when unset. */
+		label?: string;
 		placeholder?: string;
 		loading?: boolean;
 		/** Shown without results; `labels.searchEmpty` when unset. */
@@ -31,6 +34,7 @@
 		key,
 		onchoose,
 		row,
+		label,
 		placeholder,
 		loading = false,
 		empty
@@ -101,12 +105,12 @@
 {#if open}
 	<div class="fixed inset-0 z-50 bg-black/30" aria-hidden="true" onclick={close}></div>
 	<div
-		class="fixed top-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 overflow-hidden rounded-lg border border-base-200 bg-base-100 shadow-xl md:top-24"
+		class="fixed top-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 overflow-clip rounded-lg border border-base-200 bg-base-100 shadow-xl md:top-24"
 		bind:this={dialog}
 		tabindex="-1"
 		role="dialog"
 		aria-modal="true"
-		aria-label={labels.search}
+		aria-label={label ?? labels.search}
 		onkeydown={(event) => dialog && keepFocusWithin(event, dialog)}
 	>
 		<div class="flex items-center gap-2 border-b border-base-200 px-4">
@@ -137,22 +141,41 @@
 				</li>
 				{#each items as item (key(item))}
 					{@const index = flat.indexOf(item)}
+					{@const classes = [
+						'flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-left text-sm',
+						index === active && 'bg-base-200'
+					]}
 					<li role="presentation">
-						<a
-							id="{id}-{index}"
-							href={href(item)}
-							role="option"
-							aria-selected={index === active}
-							tabindex="-1"
-							class={[
-								'flex items-center gap-2.5 rounded-md px-3 py-2 text-sm',
-								index === active && 'bg-base-200'
-							]}
-							onmousemove={() => (active = index)}
-							onclick={close}
-						>
-							{@render row(item)}
-						</a>
+						{#if href}
+							<a
+								id="{id}-{index}"
+								href={href(item)}
+								role="option"
+								aria-selected={index === active}
+								tabindex="-1"
+								class={classes}
+								onmousemove={() => (active = index)}
+								onclick={close}
+							>
+								{@render row(item)}
+							</a>
+						{:else}
+							<button
+								id="{id}-{index}"
+								type="button"
+								role="option"
+								aria-selected={index === active}
+								tabindex="-1"
+								class={classes}
+								onmousemove={() => (active = index)}
+								onclick={() => {
+									close();
+									onchoose(item);
+								}}
+							>
+								{@render row(item)}
+							</button>
+						{/if}
 					</li>
 				{/each}
 			{:else}

@@ -38,9 +38,6 @@
 				{folder}
 				onselect={(f) => (folder = f)}
 				count="{rows.length} items"
-				pending={0}
-				pendingLabel="0 pending changes"
-				pendingHref="#"
 				newHref="#"
 			/>
 			<div class="flex flex-wrap items-center gap-1">
